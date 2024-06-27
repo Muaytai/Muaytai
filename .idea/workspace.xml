@@ -4,18 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2b68619-f53f-431f-b399-878e381e8ca4" name="Changes" comment="Рабочий Бэкенд">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/pythonProject1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Project-react/react-app/src/Video/Video.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Project-react/react-app/src/Video/Video.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Project-react/react-app/src/videos.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Бот-парсер/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/main.py" afterDir="false" />
+    <list default="true" id="c2b68619-f53f-431f-b399-878e381e8ca4" name="Changes" comment="Приложения">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project-react/react-app/src/Video/Video.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project-react/react-app/src/Video/Video.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project-react/react-app/src/videos.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/booking_project/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/booking_project/asgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/booking_project/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/booking_project/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/booking_project/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/migrations/0002_remove_booking_num_guests_remove_hotel_location_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/serializers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/booking_project/hotels/views.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -198,7 +209,23 @@
       <option name="project" value="LOCAL" />
       <updated>1719237864677</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Рабочий Бэкенд">
+      <option name="closed" value="true" />
+      <created>1719239326911</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1719239326911</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Приложения">
+      <option name="closed" value="true" />
+      <created>1719470763515</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1719470763515</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -217,7 +244,8 @@
     <MESSAGE value="приложение для расписания тренировок" />
     <MESSAGE value="парсер" />
     <MESSAGE value="Рабочий Бэкенд" />
-    <option name="LAST_COMMIT_MESSAGE" value="Рабочий Бэкенд" />
+    <MESSAGE value="Приложения" />
+    <option name="LAST_COMMIT_MESSAGE" value="Приложения" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>
