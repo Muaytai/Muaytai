@@ -38,5 +38,5 @@ headers = {
 
 response = requests.get('https://sutochno.ru/votes', cookies=cookies, headers=headers)
 
-with open('../frontend/src/pages/Contacts.js', 'w', encoding="utf-8") as file:
+with open('../frontend/src/pages/ReviewsPage.js', 'w', encoding="utf-8") as file:
     file.write(response.text)

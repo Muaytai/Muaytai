@@ -5,7 +5,12 @@ const Header = () => {
   return (
     <Container fluid className="bg-primary text-white py-4">
       <div className="d-flex flex-column align-items-center">
-        <h1 className="display-4 mb-3 animate__animated animate__fadeInDown">Добро пожаловать в наш отель!</h1>
+        <h1 className="display-4 mb-3 animate__animated animate__fadeInDown" style={{
+          color: '#db7093',
+          fontWeight: 'bold'
+        }}>
+          Добро пожаловать в наш отель!
+        </h1>
         <Nav className="mb-4">
           <NavItem>
             <NavLink href="/" className="btn btn-lg btn-danger text-white animate__animated animate__bounce animate__delay-1s animate__repeat-2" style={{ fontSize: 20 }}>
@@ -33,7 +38,12 @@ const Header = () => {
             </NavLink>
           </NavItem>
         </Nav>
-        <p className="lead animate__animated animate__fadeInUp">Забронируйте номер прямо сейчас и насладитесь незабываемым отдыхом.</p>
+        <p className="lead animate__animated animate__fadeInUp" style={{
+          color: '#ffd700', // Золотистый цвет
+          textShadow: '0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700'
+        }}>
+          Забронируйте номер прямо сейчас и насладитесь незабываемым отдыхом.
+        </p>
       </div>
     </Container>
   );
