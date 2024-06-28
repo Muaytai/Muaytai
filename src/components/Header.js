@@ -14,7 +14,7 @@ const Header = () => {
           </NavItem>
           <NavItem>
             <NavLink href="/contacts" className="btn btn-lg btn-success text-white animate__animated animate__bounce animate__delay-2s animate__repeat-2" style={{ fontSize: 20 }}>
-              Контакты
+              Отзывы
             </NavLink>
           </NavItem>
           <NavItem>

@@ -7,7 +7,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -36,8 +35,10 @@ class Migration(migrations.Migration):
                 ('check_out', models.DateField()),
                 ('guests', models.PositiveIntegerField(default=1)),
                 ('created_at', models.DateTimeField(default=datetime.datetime.now)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings', to=settings.AUTH_USER_MODEL)),
-                ('hotel', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings', to='hotels.hotel')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings',
+                                           to=settings.AUTH_USER_MODEL)),
+                ('hotel', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings',
+                                            to='hotels.hotel')),
             ],
         ),
     ]
