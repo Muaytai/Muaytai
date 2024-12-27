@@ -1,3 +1,15 @@
-venv
-.venv
+# Виртуальное окружение
+venv/
+env/
+
+# Файлы Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Переменные окружения
 .env
+
+# IDE
+.idea/
+.vscode/
