@@ -1,15 +1,71 @@
-import aiohttp
-import asyncio
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, ContextTypes
 from typing import Dict, Any
 import os
 from dotenv import load_dotenv
+from datetime import datetime, timedelta
+import sqlite3
 
 # Загружаем переменные окружения
 load_dotenv()
 
-# Получаем токен из переменных окружения
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 ADMIN_ID = os.getenv('ADMIN_ID')
+CHANNEL_ID = os.getenv('CHANNEL_ID')
+
+# Состояния для FSM
+class States:
+    REGISTRATION = "registration"
+    CONTACT = "contact"
+    CITY = "city"
+    CREATE_AD = "create_ad"
+    AD_TYPE = "ad_type"
+    AD_CITY = "ad_city"
+    AD_CONTENT = "ad_content"
+    AD_IMAGE = "ad_image"
+    AD_SALARY = "ad_salary"
+    AD_HASHTAGS = "ad_hashtags"
+
+# Инициализация базы данных
+def init_db():
+    conn = sqlite3.connect('board.db')
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY,
+            username TEXT,
+            city TEXT,
+            balance REAL DEFAULT 0,
+            is_verified BOOLEAN DEFAULT FALSE,
+            last_free_post TIMESTAMP
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Начало работы с ботом"""
+    user_id = update.message.from_user.id
+    
+    # Проверка подписки на канал
+    member = await context.bot.get_chat_member(CHANNEL_ID, user_id)
+    if member.status in ['left', 'kicked']:
+        keyboard = [[InlineKeyboardButton("Подписаться на канал", url=f"https://t.me/{CHANNEL_ID}")]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await update.message.reply_text(
+            "Для использования бота необходимо подписаться на канал!",
+            reply_markup=reply_markup
+        )
+        return States.REGISTRATION
+
+    # Запрос контакта
+    keyboard = [[InlineKeyboardButton("Поделиться контактом", request_contact=True)]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text(
+        "Для регистрации поделитесь своим контактом",
+        reply_markup=reply_markup
+    )
+    return States.CONTACT
 
 async def get_updates(offset: int = None) -> Dict[str, Any]:
     """Получает обновления от Telegram API"""
