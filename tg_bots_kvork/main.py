@@ -48,14 +48,14 @@ SEARCH_HASHTAG = 19
 SEARCH_PRICE = 20
 
 AD_TYPES = {
-    "⁉️ ВОПРОС ⁉️": {"price": 0, "code": "question"},
-    "💵 БАРАХОЛКА 💵": {"price": 0, "code": "market"},
-    "👷🏻♂️ ВАКАНСИИ 👷🏻♂️": {"price": 0, "code": "job"},
-    "🏠 НЕДВИЖИМОСТЬ 🏢": {"price": 0, "code": "realty"},
-    "🚙 АВТО-МОТО/ЗАПЧАСТИ 🛵": {"price": 0, "code": "auto"},
-    "🐶 ЖИВОТНЫЕ/РАСТЕНИЯ 🌱": {"price": 0, "code": "pets"},
-    "🤝 УСЛУГИ 🤝": {"price": 10000, "code": "services"},
-    "💼 ДЛЯ БИЗНЕСА 💼": {"price": 15000, "code": "business"}
+    "⭐️ ВОПРОС ⭐️": {"price": 0, "code": "question"},
+    "💎 БАРАХОЛКА 💎": {"price": 0, "code": "market"},
+    "👨‍💼 ВАКАНСИИ 👩‍💼": {"price": 0, "code": "job"},
+    "🏢 НЕДВИЖИМОСТЬ 🏠": {"price": 0, "code": "realty"},
+    "🚗 АВТО-МОТО 🏍": {"price": 0, "code": "auto"},
+    "🐾 ЖИВОТНЫЕ 🌺": {"price": 0, "code": "pets"},
+    "✨ УСЛУГИ ✨": {"price": 10000, "code": "services"},
+    "💫 ДЛЯ БИЗНЕСА 💫": {"price": 15000, "code": "business"}
 }
 
 ALLOWED_DOMAINS = [
@@ -169,12 +169,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def show_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Показывает главное меню"""
     keyboard = [
-        ["📝 Создать объявление", "🔍 Поиск объявлений"],
-        ["📹 Видео-инструкция", "👤 Профиль"]
+        ["🌟 СОЗДАТЬ ОБЪЯВЛЕНИЕ ✨", "🔍 ПОИСК ОБЪЯВЛЕНИЙ 🎯"],
+        ["📹 ВИДЕО-ИНСТРУКЦИЯ 🎥", "👤 МОЙ ПРОФИЛЬ 💫"]
     ]
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
     await update.message.reply_text(
-        "Выберите действие:",
+        "✨ Выберите действие:",
         reply_markup=reply_markup
     )
 
@@ -203,7 +203,7 @@ async def handle_contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if not cities:
         # Если список городов пуст, добавляем базовые города
-        default_cities = ["Сеул", "Пусан", "Инчхон", "Тэгу", "Тэджон", "Квандж", "Ульсан"]
+        default_cities = ["Сеул", "Пусан", "Инчхон", "Тэгу", "Тэдон", "Квандж", "Ульсан"]
         conn = sqlite3.connect('board.db')
         c = conn.cursor()
         for city in default_cities:
@@ -237,13 +237,27 @@ async def handle_city(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             "Пожалуйста, выберите город из списка."
         )
+        conn.close()
         return CITY
+
+    # Проверяем, существует ли пользователь
+    c.execute("SELECT user_id FROM users WHERE user_id = ?", (user_id,))
+    user_exists = c.fetchone()
     
-    # Регистрируем пользователя
-    c.execute("""
-        INSERT INTO users (user_id, username, phone, city)
-        VALUES (?, ?, ?, ?)
-    """, (user_id, username, phone, city))
+    if user_exists:
+        # Если пользователь существует, обновляем его данные
+        c.execute("""
+            UPDATE users 
+            SET username = ?, phone = ?, city = ?
+            WHERE user_id = ?
+        """, (username, phone, city, user_id))
+    else:
+        # Если пользователь новый, создаем запись
+        c.execute("""
+            INSERT INTO users (user_id, username, phone, city)
+            VALUES (?, ?, ?, ?)
+        """, (user_id, username, phone, city))
+    
     conn.commit()
     conn.close()
     
@@ -286,13 +300,13 @@ async def handle_verification_choice(update: Update, context: ContextTypes.DEFAU
         
         # Показываем главное меню через новое сообщение
         keyboard = [
-            ["📝 Создать объявление", "🔍 Поиск объявлений"],
-            ["📹 Видео-инструкция", "👤 Профиль"]
+            ["🌟 СОЗДАТЬ ОБЪЯВЛЕНИЕ ✨", "🔍 ПОИСК ОБЪЯВЛЕНИЙ 🎯"],
+            ["📹 ВИДЕО-ИНСТРУКЦИЯ 🎥", "👤 МОЙ ПРОФИЛЬ 💫"]
         ]
         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
         await context.bot.send_message(
             chat_id=query.from_user.id,
-            text="Выберите действие:",
+            text="✨ Выберите действие:",
             reply_markup=reply_markup
         )
     else:
@@ -301,13 +315,13 @@ async def handle_verification_choice(update: Update, context: ContextTypes.DEFAU
         )
         # Показываем главное меню через новое сообщение
         keyboard = [
-            ["📝 Создать объявление", "🔍 Поиск объявлений"],
-            ["📹 Видео-инструкция", "👤 Профиль"]
+            ["🌟 СОЗДАТЬ ОБЪЯВЛЕНИЕ ✨", "🔍 ПОИСК ОБЪЯВЛЕНИЙ 🎯"],
+            ["📹 ВИДЕО-ИНСТРУКЦИЯ 🎥", "👤 МОЙ ПРОФИЛЬ 💫"]
         ]
         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
         await context.bot.send_message(
             chat_id=query.from_user.id,
-            text="Выберите действие:",
+            text="✨ Выберите действие:",
             reply_markup=reply_markup
         )
     
@@ -452,10 +466,10 @@ async def handle_content(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Проверяем ссылки
     if not check_links(content):
         await update.message.reply_text(
-            "⚠️ В тексте обнаружены запрещенные ссылки!\n\n"
+            "⚠️ В тексте найдены запрещенные ссылки!\n\n"
             "Разрешены ссылки только на следующие сайты:\n" +
             "\n".join(f"- {domain}" for domain in ALLOWED_DOMAINS) +
-            "\n\nПожалуйста, исправьте текст и отправьте снова."
+            "\n\nПожа��уйста, исправьте текст и отправьте снова."
         )
         return CONTENT
     
@@ -480,7 +494,7 @@ async def handle_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data['image_file_id'] = photo.file_id
     
     # Если тип объявления - вакансия, запрашиваем зарплату
-    if context.user_data['ad_type'] == "👷🏻♂️ ВАКАНСИИ 👷🏻♂️":
+    if context.user_data['ad_type'] == "👷‍💼 ВАКАНСИИ 👩‍💼":
         keyboard = [
             ["В час", "В день", "В неделю"],
             ["В месяц", "В год", "Сдельно"]
@@ -498,7 +512,7 @@ async def skip_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Пропуск загрузки изображения"""
     context.user_data['image_file_id'] = None
     
-    if context.user_data['ad_type'] == "👷🏻♂️ ВАКАНСИИ 👷🏻♂️":
+    if context.user_data['ad_type'] == "👷‍💼 ВАКАНСИИ 👩‍💼":
         keyboard = [
             ["В час", "В день", "В неделю"],
             ["В месяц", "В год", "Сдельно"]
@@ -654,13 +668,13 @@ async def handle_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE
                 
                 # Показываем главное меню
                 keyboard = [
-                    ["📝 Создать объявление", "🔍 Поиск объявлений"],
-                    ["📹 Видео-инструкция", "👤 Профиль"]
+                    ["🌟 СОЗДАТЬ ОБЪЯВЛЕНИЕ ✨", "🔍 ПОИС�� ОБЪЯВЛЕНИЙ 🎯"],
+                    ["📹 ВИДЕО-ИНСТРУКЦИЯ 🎥", "👤 МОЙ ПРОФИЛЬ 💫"]
                 ]
                 reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
                 await context.bot.send_message(
                     chat_id=query.from_user.id,
-                    text="Выберите действие:",
+                    text="✨ Выберите действие:",
                     reply_markup=reply_markup
                 )
             else:
@@ -677,13 +691,13 @@ async def handle_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE
             
             # Показываем главное меню
             keyboard = [
-                ["📝 Создать объявление", "🔍 Поиск объявлений"],
-                ["📹 Видео-инструкция", "👤 Профиль"]
+                ["🌟 СОЗДАТЬ ОБЪЯВЛЕНИЕ ✨", "🔍 ПОИСК ОБЪЯВЛЕНИЙ 🎯"],
+                ["📹 ВИДЕО-ИНСТРУКЦИЯ 🎥", "👤 МОЙ ПРОФИЛЬ 💫"]
             ]
             reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
             await context.bot.send_message(
                 chat_id=query.from_user.id,
-                text="Выберите действие:",
+                text="✨ Выберите действие:",
                 reply_markup=reply_markup
             )
         
@@ -807,10 +821,9 @@ async def profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     # Создаем клавиатуру профиля
     keyboard = [
-        ["🌆 Сменить город"],
-        ["💰 Пополнить баланс", "💸 Перевести средства"],
-        ["📋 Мои объявления"],
-        ["Главное меню"]
+        ["🌆 Мои объявления", "🌆 Изменить город"],
+        ["💎 Пополнить баланс", "💰 Перевести баланс"],
+        ["🏠 Главное меню"]
     ]
     
     # Добавляем кнопку верификации, если пользователь не верифицирован
@@ -826,7 +839,10 @@ async def handle_profile_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
     """Обработка меню профиля"""
     choice = update.message.text
     
-    if choice == "🌆 Сменить город":
+    if choice == "🌆 Мои объявления":
+        return await show_my_ads(update, context)
+        
+    elif choice == "🌆 Изменить город":
         # Получаем список городов
         conn = sqlite3.connect('board.db')
         c = conn.cursor()
@@ -851,15 +867,12 @@ async def handle_profile_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
         )
         return ADD_BALANCE
     
-    elif choice == "💸 Перевести средства":
+    elif choice == "💸 Перевести баланс":
         await update.message.reply_text(
             "Введите ID пользователя и сумму перевода:\n"
             "Например: 123456789 50000"
         )
         return TRANSFER_BALANCE
-    
-    elif choice == "📋 Мои объявления":
-        return await show_my_ads(update, context)
     
     elif choice == "✅ Запросить верификацию":
         keyboard = [
@@ -879,9 +892,11 @@ async def handle_profile_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
         )
         return VERIFICATION_CHOICE
     
-    elif choice == "Главное меню":
+    elif choice == "🏠 Главное меню":
         await show_main_menu(update, context)
         return ConversationHandler.END
+
+    return PROFILE_MENU
 
 async def show_my_ads(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Показ объявлений пользователя"""
@@ -987,7 +1002,7 @@ async def handle_balance_transfer(update: Update, context: ContextTypes.DEFAULT_
         conn.close()
         
         await update.message.reply_text(
-            f"✅ Перево�� {amount:,} KRW выполнен успешно!"
+            f"✅ Перевод {amount:,} KRW выполнен успешно!"
         )
         
     except ValueError:
@@ -1006,18 +1021,18 @@ async def search_ads(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         ["🔍 По типу", "🌆 По городу"],
         ["#️⃣ По хэштегу", "💰 По цене"],
-        ["Главное меню"]
+        ["🏠 Главное меню"]
     ]
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
     
     await update.message.reply_text(
-        "Выберите критерий поиска:",
+        "✨ Выберите критерий поиска:",
         reply_markup=reply_markup
     )
     return SEARCH_MENU
 
 async def handle_search_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработка меню поиска"""
+    """Обработка меню ��оиска"""
     choice = update.message.text
     
     if choice == "🔍 По типу":
@@ -1061,7 +1076,7 @@ async def handle_search_menu(update: Update, context: ContextTypes.DEFAULT_TYPE)
         )
         return SEARCH_PRICE
     
-    elif choice == "Главное меню":
+    elif choice == "🏠 Главное меню":
         await show_main_menu(update, context)
         return ConversationHandler.END
 
@@ -1069,38 +1084,61 @@ async def show_search_results(update: Update, context: ContextTypes.DEFAULT_TYPE
     """Показ результатов поиска"""
     conn = sqlite3.connect('board.db')
     c = conn.cursor()
-    c.execute(query, params)
-    ads = c.fetchall()
-    conn.close()
     
-    if not ads:
-        await update.message.reply_text(
-            "По вашему запросу ничего не найдено."
-        )
-        return SEARCH_MENU
-    
-    for ad in ads[:5]:  # Показываем только 5 последних объявлений
-        ad_text = f"{ad[1]}\n\n"  # Тип объявления
-        ad_text += f"🌆 Город: {ad[2]}\n\n"  # Город
-        ad_text += f"{ad[3][:200]}..."  # Текст (первые 200 символов)
+    try:
+        # Выполняем запрос
+        c.execute(query, params)
+        ads = c.fetchall()
         
-        if ad[5]:  # Если есть зарплата
-            ad_text += f"\n\n💰 Зарплата: {ad[5]}"
-        
-        keyboard = [[InlineKeyboardButton("✍️ Написать автору", url=f"https://t.me/{ad[7]}")]]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        
-        if ad[4]:  # Если есть изображение
-            await update.message.reply_photo(
-                photo=ad[4],
-                caption=ad_text,
-                reply_markup=reply_markup
-            )
-        else:
+        if not ads:
             await update.message.reply_text(
-                ad_text,
-                reply_markup=reply_markup
+                "По вашему запросу ничего не найдено."
             )
+            return SEARCH_MENU
+        
+        for ad in ads[:5]:  # Показываем только 5 последних объявлений
+            ad_text = f"{ad[2]}\n\n"  # Тип объявления
+            ad_text += f"🌆 Город: {ad[3]}\n\n"  # Город
+            ad_text += f"{ad[4][:200]}..."  # Текст (первые 200 символов)
+            
+            if ad[6]:  # Если есть зарплата
+                ad_text += f"\n\n💰 Зарплата: {ad[6]}"
+            
+            # Получаем username автора
+            c.execute("SELECT username FROM users WHERE user_id = ?", (ad[1],))
+            user = c.fetchone()
+            username = user[0] if user and user[0] else "tgkvork_bot"
+            
+            keyboard = [[InlineKeyboardButton("✍️ Написать автору", url=f"https://t.me/{username}")]]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            
+            if ad[5]:  # Если есть изображение
+                try:
+                    await update.message.reply_photo(
+                        photo=ad[5],
+                        caption=ad_text,
+                        reply_markup=reply_markup
+                    )
+                except Exception as e:
+                    print(f"Ошибка при отправке фото: {e}")
+                    await update.message.reply_text(
+                        ad_text,
+                        reply_markup=reply_markup
+                    )
+            else:
+                await update.message.reply_text(
+                    ad_text,
+                    reply_markup=reply_markup
+                )
+    
+    except Exception as e:
+        print(f"Ошибка при поиске: {e}")
+        await update.message.reply_text(
+            "Произошла ошибка при поиске. Попробуйте позже."
+        )
+    
+    finally:
+        conn.close()
     
     return SEARCH_MENU
 
@@ -1156,9 +1194,9 @@ def main():
         conv_handler = ConversationHandler(
             entry_points=[
                 CommandHandler("start", start),
-                MessageHandler(filters.Regex("^📝 Создать объявление$"), create_ad),
-                MessageHandler(filters.Regex("^👤 Профиль$"), profile),
-                MessageHandler(filters.Regex("^🔍 Поиск объявлений$"), search_ads),
+                MessageHandler(filters.Regex("^🌟 СОЗДАТЬ ОБЪЯВЛЕНИЕ ✨$"), create_ad),
+                MessageHandler(filters.Regex("^👤 МОЙ ПРОФИЛЬ 💫$"), profile),
+                MessageHandler(filters.Regex("^🔍 ПОИСК ОБЪЯВЛЕНИЙ 🎯$"), search_ads),
             ],
             states={
                 CONTACT: [MessageHandler(filters.CONTACT, handle_contact)],
@@ -1183,19 +1221,30 @@ def main():
                 TRANSFER_BALANCE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_balance_transfer)],
                 MY_ADS: [MessageHandler(filters.TEXT & ~filters.COMMAND, show_my_ads)],
                 SEARCH_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_search_menu)],
-                SEARCH_TYPE: [MessageHandler(filters.TEXT & ~filters.COMMAND, 
-                            lambda u, c: show_search_results(u, c, 
-                            "SELECT * FROM ads WHERE type = ? ORDER BY created_at DESC", (u.message.text,)))],
-                SEARCH_CITY: [MessageHandler(filters.TEXT & ~filters.COMMAND,
-                            lambda u, c: show_search_results(u, c,
-                            "SELECT * FROM ads WHERE city = ? ORDER BY created_at DESC", (u.message.text,)))],
-                SEARCH_HASHTAG: [MessageHandler(filters.TEXT & ~filters.COMMAND,
-                            lambda u, c: show_search_results(u, c,
-                            "SELECT * FROM ads WHERE hashtags LIKE ? ORDER BY created_at DESC", (f"%#{u.message.text}%",)))],
-                SEARCH_PRICE: [MessageHandler(filters.TEXT & ~filters.COMMAND,
-                            lambda u, c: show_search_results(u, c,
-                            "SELECT * FROM ads WHERE CAST(REGEXP_REPLACE(salary, '[^0-9]', '') AS INTEGER) BETWEEN ? AND ?",
-                            tuple(map(int, u.message.text.split()))))]
+                SEARCH_TYPE: [
+                    MessageHandler(filters.TEXT & ~filters.COMMAND, 
+                        lambda u, c: show_search_results(u, c, 
+                        "SELECT * FROM ads WHERE type = ? AND status = 'published' ORDER BY created_at DESC", 
+                        (u.message.text,)))
+                ],
+                SEARCH_CITY: [
+                    MessageHandler(filters.TEXT & ~filters.COMMAND,
+                        lambda u, c: show_search_results(u, c,
+                        "SELECT * FROM ads WHERE city = ? AND status = 'published' ORDER BY created_at DESC", 
+                        (u.message.text,)))
+                ],
+                SEARCH_HASHTAG: [
+                    MessageHandler(filters.TEXT & ~filters.COMMAND,
+                        lambda u, c: show_search_results(u, c,
+                        "SELECT * FROM ads WHERE hashtags LIKE ? AND status = 'published' ORDER BY created_at DESC", 
+                        (f"%#{u.message.text}%",)))
+                ],
+                SEARCH_PRICE: [
+                    MessageHandler(filters.TEXT & ~filters.COMMAND,
+                        lambda u, c: show_search_results(u, c,
+                        "SELECT * FROM ads WHERE salary LIKE ? AND status = 'published' ORDER BY created_at DESC",
+                        (f"%{u.message.text}%",)))
+                ]
             },
             fallbacks=[CommandHandler("cancel", lambda u, c: ConversationHandler.END)]
         )
